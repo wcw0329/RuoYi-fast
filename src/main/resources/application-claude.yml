@@ -1,0 +1,72 @@
+# Claude API 配置
+claude:
+  api:
+    # API基础URL
+    base-url: https://api.anthropic.com
+    # API版本
+    version: 2023-06-01
+    # 默认模型
+    default-model: claude-3-5-sonnet-20241022
+    # 请求超时时间（毫秒）
+    timeout: 30000
+    # 最大重试次数
+    max-retries: 3
+    # 是否启用代理
+    proxy-enabled: false
+    # 代理配置
+    proxy:
+      host: 127.0.0.1
+      port: 8080
+      username: ""
+      password: ""
+  
+  # 使用限制配置
+  limits:
+    # 用户每日最大Token数
+    daily-token-limit: 1000000
+    # 用户每月最大Token数
+    monthly-token-limit: 10000000
+    # 用户每日最大费用（美元）
+    daily-cost-limit: 10.0
+    # 用户每月最大费用（美元）
+    monthly-cost-limit: 100.0
+    # 单次请求最大Token数
+    max-tokens-per-request: 4096
+    # 单次请求最大字符数
+    max-characters-per-request: 100000
+  
+  # 费用配置
+  pricing:
+    # Claude 3.5 Sonnet
+    claude-3-5-sonnet-20241022:
+      input: 3.0    # $3.00 per 1M input tokens
+      output: 15.0  # $15.00 per 1M output tokens
+    # Claude 3.5 Haiku
+    claude-3-5-haiku-20241022:
+      input: 0.25   # $0.25 per 1M input tokens
+      output: 1.25  # $1.25 per 1M output tokens
+    # Claude 3 Opus
+    claude-3-opus-20240229:
+      input: 15.0   # $15.00 per 1M input tokens
+      output: 75.0  # $75.00 per 1M output tokens
+    # Claude 3 Sonnet
+    claude-3-sonnet-20240229:
+      input: 3.0    # $3.00 per 1M input tokens
+      output: 15.0  # $15.00 per 1M output tokens
+    # Claude 3 Haiku
+    claude-3-haiku-20240307:
+      input: 0.25   # $0.25 per 1M input tokens
+      output: 1.25  # $1.25 per 1M output tokens
+  
+  # 日志配置
+  logging:
+    # 是否记录API调用日志
+    enabled: true
+    # 日志级别
+    level: INFO
+    # 是否记录请求内容
+    log-request: false
+    # 是否记录响应内容
+    log-response: false
+    # 是否记录敏感信息（如API密钥）
+    log-sensitive: false
