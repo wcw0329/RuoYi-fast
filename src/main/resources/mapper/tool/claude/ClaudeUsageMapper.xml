@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.tool.claude.mapper.ClaudeUsageMapper">
+    
+    <resultMap type="ClaudeUsage" id="ClaudeUsageResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="apiKey"    column="api_key"    />
+        <result property="modelName"    column="model_name"    />
+        <result property="requestType"    column="request_type"    />
+        <result property="inputTokens"    column="input_tokens"    />
+        <result property="outputTokens"    column="output_tokens"    />
+        <result property="totalTokens"    column="total_tokens"    />
+        <result property="inputCharacters"    column="input_characters"    />
+        <result property="outputCharacters"    column="output_characters"    />
+        <result property="totalCharacters"    column="total_characters"    />
+        <result property="cost"    column="cost"    />
+        <result property="status"    column="status"    />
+        <result property="errorMessage"    column="error_message"    />
+        <result property="requestTime"    column="request_time"    />
+        <result property="responseTime"    column="response_time"    />
+        <result property="responseTimeMs"    column="response_time_ms"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="userAgent"    column="user_agent"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectClaudeUsageVo">
+        select id, user_id, user_name, api_key, model_name, request_type, input_tokens, output_tokens, total_tokens, input_characters, output_characters, total_characters, cost, status, error_message, request_time, response_time, response_time_ms, ip_address, user_agent, session_id, project_name, remark, create_time, update_time from claude_usage
+    </sql>
+
+    <select id="selectClaudeUsageList" parameterType="ClaudeUsage" resultMap="ClaudeUsageResult">
+        <include refid="selectClaudeUsageVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="apiKey != null  and apiKey != ''"> and api_key = #{apiKey}</if>
+            <if test="modelName != null  and modelName != ''"> and model_name = #{modelName}</if>
+            <if test="requestType != null  and requestType != ''"> and request_type = #{requestType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="requestTime != null "> and request_time = #{requestTime}</if>
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address = #{ipAddress}</if>
+            <if test="sessionId != null  and sessionId != ''"> and session_id = #{sessionId}</if>
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(request_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(request_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+        order by request_time desc
+    </select>
+    
+    <select id="selectClaudeUsageById" parameterType="Long" resultMap="ClaudeUsageResult">
+        <include refid="selectClaudeUsageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertClaudeUsage" parameterType="ClaudeUsage" useGeneratedKeys="true" keyProperty="id">
+        insert into claude_usage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="apiKey != null">api_key,</if>
+            <if test="modelName != null">model_name,</if>
+            <if test="requestType != null">request_type,</if>
+            <if test="inputTokens != null">input_tokens,</if>
+            <if test="outputTokens != null">output_tokens,</if>
+            <if test="totalTokens != null">total_tokens,</if>
+            <if test="inputCharacters != null">input_characters,</if>
+            <if test="outputCharacters != null">output_characters,</if>
+            <if test="totalCharacters != null">total_characters,</if>
+            <if test="cost != null">cost,</if>
+            <if test="status != null">status,</if>
+            <if test="errorMessage != null">error_message,</if>
+            <if test="requestTime != null">request_time,</if>
+            <if test="responseTime != null">response_time,</if>
+            <if test="responseTimeMs != null">response_time_ms,</if>
+            <if test="ipAddress != null">ip_address,</if>
+            <if test="userAgent != null">user_agent,</if>
+            <if test="sessionId != null">session_id,</if>
+            <if test="projectName != null">project_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="apiKey != null">#{apiKey},</if>
+            <if test="modelName != null">#{modelName},</if>
+            <if test="requestType != null">#{requestType},</if>
+            <if test="inputTokens != null">#{inputTokens},</if>
+            <if test="outputTokens != null">#{outputTokens},</if>
+            <if test="totalTokens != null">#{totalTokens},</if>
+            <if test="inputCharacters != null">#{inputCharacters},</if>
+            <if test="outputCharacters != null">#{outputCharacters},</if>
+            <if test="totalCharacters != null">#{totalCharacters},</if>
+            <if test="cost != null">#{cost},</if>
+            <if test="status != null">#{status},</if>
+            <if test="errorMessage != null">#{errorMessage},</if>
+            <if test="requestTime != null">#{requestTime},</if>
+            <if test="responseTime != null">#{responseTime},</if>
+            <if test="responseTimeMs != null">#{responseTimeMs},</if>
+            <if test="ipAddress != null">#{ipAddress},</if>
+            <if test="userAgent != null">#{userAgent},</if>
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClaudeUsage" parameterType="ClaudeUsage">
+        update claude_usage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="apiKey != null">api_key = #{apiKey},</if>
+            <if test="modelName != null">model_name = #{modelName},</if>
+            <if test="requestType != null">request_type = #{requestType},</if>
+            <if test="inputTokens != null">input_tokens = #{inputTokens},</if>
+            <if test="outputTokens != null">output_tokens = #{outputTokens},</if>
+            <if test="totalTokens != null">total_tokens = #{totalTokens},</if>
+            <if test="inputCharacters != null">input_characters = #{inputCharacters},</if>
+            <if test="outputCharacters != null">output_characters = #{outputCharacters},</if>
+            <if test="totalCharacters != null">total_characters = #{totalCharacters},</if>
+            <if test="cost != null">cost = #{cost},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="errorMessage != null">error_message = #{errorMessage},</if>
+            <if test="requestTime != null">request_time = #{requestTime},</if>
+            <if test="responseTime != null">response_time = #{responseTime},</if>
+            <if test="responseTimeMs != null">response_time_ms = #{responseTimeMs},</if>
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="userAgent != null">user_agent = #{userAgent},</if>
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteClaudeUsageById" parameterType="Long">
+        delete from claude_usage where id = #{id}
+    </delete>
+
+    <delete id="deleteClaudeUsageByIds" parameterType="String">
+        delete from claude_usage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 统计用户使用量 -->
+    <select id="selectUserUsageStats" parameterType="Long" resultMap="ClaudeUsageResult">
+        select 
+            sum(input_tokens) as input_tokens,
+            sum(output_tokens) as output_tokens,
+            sum(total_tokens) as total_tokens,
+            sum(input_characters) as input_characters,
+            sum(output_characters) as output_characters,
+            sum(total_characters) as total_characters,
+            sum(cost) as cost,
+            count(*) as id
+        from claude_usage 
+        where user_id = #{userId} and status = 'SUCCESS'
+    </select>
+
+    <!-- 统计总使用量 -->
+    <select id="selectTotalUsageStats" resultMap="ClaudeUsageResult">
+        select 
+            sum(input_tokens) as input_tokens,
+            sum(output_tokens) as output_tokens,
+            sum(total_tokens) as total_tokens,
+            sum(input_characters) as input_characters,
+            sum(output_characters) as output_characters,
+            sum(total_characters) as total_characters,
+            sum(cost) as cost,
+            count(*) as id
+        from claude_usage 
+        where status = 'SUCCESS'
+    </select>
+
+    <!-- 按日期统计使用量 -->
+    <select id="selectUsageStatsByDate" resultMap="ClaudeUsageResult">
+        select 
+            date_format(request_time, '%Y-%m-%d') as model_name,
+            sum(input_tokens) as input_tokens,
+            sum(output_tokens) as output_tokens,
+            sum(total_tokens) as total_tokens,
+            sum(input_characters) as input_characters,
+            sum(output_characters) as output_characters,
+            sum(total_characters) as total_characters,
+            sum(cost) as cost,
+            count(*) as id
+        from claude_usage 
+        where status = 'SUCCESS'
+        <if test="startDate != null and startDate != ''">
+            and date_format(request_time, '%Y-%m-%d') >= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and date_format(request_time, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        group by date_format(request_time, '%Y-%m-%d')
+        order by model_name desc
+    </select>
+
+    <!-- 按模型统计使用量 -->
+    <select id="selectUsageStatsByModel" resultMap="ClaudeUsageResult">
+        select 
+            model_name,
+            sum(input_tokens) as input_tokens,
+            sum(output_tokens) as output_tokens,
+            sum(total_tokens) as total_tokens,
+            sum(input_characters) as input_characters,
+            sum(output_characters) as output_characters,
+            sum(total_characters) as total_characters,
+            sum(cost) as cost,
+            count(*) as id
+        from claude_usage 
+        where status = 'SUCCESS'
+        group by model_name
+        order by cost desc
+    </select>
+</mapper>
